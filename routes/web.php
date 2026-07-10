@@ -29,6 +29,14 @@ Route::get('/invoice/{invoice}/preview', [PDFController::class, 'previewInvoice'
     ->name('invoice.public-preview')
     ->middleware('signed');
 
+Route::get('/invoice/{invoice}/pdf', [PDFController::class, 'streamPDF'])
+    ->name('invoice.public-pdf')
+    ->middleware('signed');
+
+Route::post('/invoice/{invoice}/pay-token', [\App\Http\Controllers\MidtransController::class, 'getSnapToken'])
+    ->name('invoice.pay-token')
+    ->middleware('signed');
+
 Route::get('/quotation/{quotation}/preview', [PDFController::class, 'previewQuotation'])
     ->name('quotation.public-preview')
     ->middleware('signed');

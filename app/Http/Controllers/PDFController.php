@@ -57,9 +57,38 @@ class PDFController extends Controller
     }
 
     /**
-     * Preview the invoice PDF in the browser inline.
+     * Preview the invoice in the HTML client portal.
      */
     public function previewInvoice(Invoice $invoice)
+    {
+        $invoice->load(['client', 'items', 'payments']);
+        
+        $companyName = Setting::get('company_name', 'PT Porcalabs Digital Indonesia');
+        $companyAddress = Setting::get('company_address', '');
+        $companyPhone = Setting::get('company_phone', '');
+        $companyEmail = Setting::get('company_email', '');
+        $companyNpwp = Setting::get('company_npwp', '');
+        $waConfirmationNumber = Setting::get('wa_confirmation_number', '');
+        
+        $bankAccountsJson = Setting::get('bank_accounts', '[]');
+        $bankAccounts = json_decode($bankAccountsJson, true) ?? [];
+
+        return view('invoice.portal', compact(
+            'invoice',
+            'companyName',
+            'companyAddress',
+            'companyPhone',
+            'companyEmail',
+            'companyNpwp',
+            'waConfirmationNumber',
+            'bankAccounts'
+        ));
+    }
+
+    /**
+     * Stream the invoice PDF inline.
+     */
+    public function streamPDF(Invoice $invoice)
     {
         $invoice->load(['client', 'items', 'payments']);
         
