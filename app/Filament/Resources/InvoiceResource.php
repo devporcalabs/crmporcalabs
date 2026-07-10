@@ -90,7 +90,7 @@ class InvoiceResource extends Resource
                                                     ->numeric()
                                                     ->required()
                                                     ->default(1)
-                                                    ->live()
+                                                    ->live(onBlur: true)
                                                     ->afterStateUpdated(fn (Forms\Get $get, Forms\Set $set) => self::updateTotals($get, $set))
                                                     ->columnSpan(2),
 
@@ -105,14 +105,13 @@ class InvoiceResource extends Resource
                                                     ->prefix('Rp')
                                                     ->required()
                                                     ->default(0)
-                                                    ->live()
+                                                    ->live(onBlur: true)
                                                     ->afterStateUpdated(fn (Forms\Get $get, Forms\Set $set) => self::updateTotals($get, $set))
                                                     ->columnSpan(3),
                                             ])
                                             ->columns(12)
                                             ->defaultItems(1)
                                             ->disabled(fn (?Model $record) => self::isLocked($record))
-                                            ->live()
                                             ->afterStateUpdated(fn (Forms\Get $get, Forms\Set $set) => self::updateTotals($get, $set))
                                             ->orderColumn('urutan')
                                             ->itemLabel(fn (array $state): ?string => $state['deskripsi'] ?? null),
@@ -139,7 +138,7 @@ class InvoiceResource extends Resource
                                             ->label('Nilai Diskon')
                                             ->numeric()
                                             ->default(0)
-                                            ->live()
+                                            ->live(onBlur: true)
                                             ->disabled(fn (?Model $record) => self::isLocked($record))
                                             ->afterStateUpdated(fn (Forms\Get $get, Forms\Set $set) => self::updateTotals($get, $set)),
 
@@ -147,7 +146,7 @@ class InvoiceResource extends Resource
                                             ->label('PPN (%)')
                                             ->numeric()
                                             ->default(11.00)
-                                            ->live()
+                                            ->live(onBlur: true)
                                             ->disabled(fn (?Model $record) => self::isLocked($record))
                                             ->afterStateUpdated(fn (Forms\Get $get, Forms\Set $set) => self::updateTotals($get, $set)),
 
