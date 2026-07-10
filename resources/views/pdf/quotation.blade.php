@@ -369,9 +369,9 @@
                 <div style="margin: 8px 0; text-align: center;">
                     @php
                         $verifyUrl = URL::signedRoute('quotation.verify', ['quotation' => $quotation->id]);
-                        $qrCodeUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=' . urlencode($verifyUrl);
+                        $qrCodeUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' . urlencode($verifyUrl);
                     @endphp
-                    <img src="{{ $qrCodeUrl }}" style="width: 70px; height: 70px; display: inline-block;">
+                    <img src="{{ $qrCodeUrl }}" style="width: 85px; height: 85px; display: inline-block;">
                     <div style="font-size: 7px; color: #666666; margin-top: 4px;">Scan untuk verifikasi</div>
                 </div>
                 <div class="signature-name">{{ $signatureName }}</div>
