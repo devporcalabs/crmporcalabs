@@ -358,27 +358,27 @@
     <table class="bottom-table">
         <tr>
             <td class="payment-instructions">
-                <div style="font-weight: bold; margin-bottom: 8px; font-size: 11px;">Instruksi Pembayaran:</div>
-                <div style="font-size: 11px; margin-bottom: 10px; color: #555555;">Mohon lakukan transfer ke salah satu rekening berikut:</div>
-                
-                @forelse($bankAccounts as $bank)
-                    <div class="payment-bank-item" style="margin-bottom: 10px;">
-                        <span class="payment-bank-name">{{ $bank['bank'] }}</span><br>
-                        @if(!empty($bank['number']))
-                            No. Rek: <strong>{{ $bank['number'] }}</strong><br>
-                            A.N. {{ $bank['holder'] }}<br>
-                        @endif
-                        @if(!empty($bank['payment_link']))
-                            Link: <a href="{{ $bank['payment_link'] }}" style="color: #005691; text-decoration: underline;">{{ $bank['payment_link'] }}</a>
-                        @endif
-                    </div>
-                @empty
-                    <div class="payment-bank-item" style="color: #dc3545;">
-                        Rekening bank belum diatur. Silakan periksa halaman Pengaturan.
-                    </div>
-                @endforelse
-
                 @if($invoice->status !== 'lunas')
+                    <div style="font-weight: bold; margin-bottom: 8px; font-size: 11px;">Instruksi Pembayaran:</div>
+                    <div style="font-size: 11px; margin-bottom: 10px; color: #555555;">Mohon lakukan transfer ke salah satu rekening berikut:</div>
+                    
+                    @forelse($bankAccounts as $bank)
+                        <div class="payment-bank-item" style="margin-bottom: 10px;">
+                            <span class="payment-bank-name">{{ $bank['bank'] }}</span><br>
+                            @if(!empty($bank['number']))
+                                No. Rek: <strong>{{ $bank['number'] }}</strong><br>
+                                A.N. {{ $bank['holder'] }}<br>
+                            @endif
+                            @if(!empty($bank['payment_link']))
+                                Link: <a href="{{ $bank['payment_link'] }}" style="color: #005691; text-decoration: underline;">{{ $bank['payment_link'] }}</a>
+                            @endif
+                        </div>
+                    @empty
+                        <div class="payment-bank-item" style="color: #dc3545;">
+                            Rekening bank belum diatur. Silakan periksa halaman Pengaturan.
+                        </div>
+                    @endforelse
+
                     <div style="margin-top: 12px; margin-bottom: 12px; background-color: #f0f7fc; border-left: 3px solid #005691; padding: 8px; border-radius: 4px;">
                         <strong style="color: #005691; font-size: 10px;">Pembayaran Online Instan:</strong><br>
                         <span style="font-size: 9px; color: #444444; line-height: 1.4;">
@@ -386,11 +386,16 @@
                             Tautan: <a href="{{ URL::signedRoute('invoice.public-preview', ['invoice' => $invoice->id]) }}" style="color: #005691; text-decoration: underline; font-weight: bold;">Bayar Online Sekarang &rarr;</a>
                         </span>
                     </div>
-                @endif
 
-                <div class="payment-confirmation">
-                    * Mohon konfirmasi bukti transfer melalui WhatsApp ke nomor: <strong>+{{ $waConfirmationNumber }}</strong>
-                </div>
+                    <div class="payment-confirmation">
+                        * Mohon konfirmasi bukti transfer melalui WhatsApp ke nomor: <strong>+{{ $waConfirmationNumber }}</strong>
+                    </div>
+                @else
+                    <div style="border: 2px solid #2ec4b6; background-color: #e6f9f7; color: #127267; padding: 15px; border-radius: 8px; text-align: center; margin-top: 10px; width: 85%;">
+                        <div style="font-size: 13px; font-weight: bold; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 1px;">Lunas / Paid</div>
+                        <div style="font-size: 9px; line-height: 1.4;">Terima kasih atas pembayaran Anda. Invoice ini telah dilunasi sepenuhnya.</div>
+                    </div>
+                @endif
             </td>
             <td class="signature-box">
                 <div class="signature-title">Hormat Kami,</div>

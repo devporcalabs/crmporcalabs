@@ -260,7 +260,7 @@ class PDFController extends Controller
      */
     private function terbilang($angka)
     {
-        $angka = abs($angka);
+        $angka = abs((float) $angka);
         $baca = ["", "satu", "dua", "tiga", "empat", "lima", "enam", "tujuh", "delapan", "sembilan", "sepuluh", "sebelas"];
         $temp = "";
         
@@ -269,23 +269,33 @@ class PDFController extends Controller
         } else if ($angka < 20) {
             $temp = $this->terbilang($angka - 10) . " belas";
         } else if ($angka < 100) {
-            $temp = $this->terbilang(floor($angka / 10)) . " puluh" . $this->terbilang($angka % 10);
+            $temp = $this->terbilang(floor($angka / 10)) . " puluh " . $this->terbilang($angka % 10);
         } else if ($angka < 200) {
-            $temp = " seratus" . $this->terbilang($angka - 100);
+            $temp = " seratus " . $this->terbilang($angka - 100);
         } else if ($angka < 1000) {
-            $temp = $this->terbilang(floor($angka / 100)) . " ratus" . $this->terbilang($angka % 100);
+            $ratusan = floor($angka / 100);
+            if ($ratusan == 1) {
+                $temp = " seratus " . $this->terbilang($angka % 100);
+            } else {
+                $temp = $this->terbilang($ratusan) . " ratus " . $this->terbilang($angka % 100);
+            }
         } else if ($angka < 2000) {
-            $temp = " seribu" . $this->terbilang($angka - 1000);
+            $temp = " seribu " . $this->terbilang($angka - 1000);
         } else if ($angka < 1000000) {
-            $temp = $this->terbilang(floor($angka / 1000)) . " ribu" . $this->terbilang($angka % 1000);
+            $ribuan = floor($angka / 1000);
+            if ($ribuan == 1) {
+                $temp = " seribu " . $this->terbilang($angka % 1000);
+            } else {
+                $temp = $this->terbilang($ribuan) . " ribu " . $this->terbilang($angka % 1000);
+            }
         } else if ($angka < 1000000000) {
-            $temp = $this->terbilang(floor($angka / 1000000)) . " juta" . $this->terbilang($angka % 1000000);
+            $temp = $this->terbilang(floor($angka / 1000000)) . " juta " . $this->terbilang($angka % 1000000);
         } else if ($angka < 1000000000000) {
-            $temp = $this->terbilang(floor($angka / 1000000000)) . " milyar" . $this->terbilang(fmod($angka, 1000000000));
+            $temp = $this->terbilang(floor($angka / 1000000000)) . " milyar " . $this->terbilang(fmod($angka, 1000000000));
         } else if ($angka < 1000000000000000) {
-            $temp = $this->terbilang(floor($angka / 1000000000000)) . " trilyun" . $this->terbilang(fmod($angka, 1000000000000));
+            $temp = $this->terbilang(floor($angka / 1000000000000)) . " trilyun " . $this->terbilang(fmod($angka, 1000000000000));
         }
         
-        return trim($temp);
+        return trim(preg_replace('/\s+/', ' ', $temp));
     }
 }
