@@ -70,7 +70,7 @@
         }
 
         main {
-            margin: 40px 0;
+            margin: 60px 0 40px 0;
             flex-grow: 1;
         }
 
@@ -443,6 +443,110 @@
         .text-danger {
             color: var(--danger);
         }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 640px) {
+            main {
+                margin: 30px 0;
+            }
+
+            .card {
+                padding: 20px 15px;
+                border-radius: 16px;
+                margin-bottom: 20px;
+            }
+
+            .invoice-details-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .invoice-date-block {
+                text-align: left;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 15px;
+            }
+
+            .items-table thead {
+                display: none;
+            }
+
+            .items-table, .items-table tbody, .items-table tr, .items-table td {
+                display: block;
+                width: 100%;
+            }
+
+            .items-table tr {
+                padding: 12px 0;
+                border-bottom: 1px solid var(--gray-200);
+            }
+
+            .items-table tr:last-child {
+                border-bottom: none;
+            }
+
+            .items-table td {
+                padding: 4px 0;
+                border: none;
+                text-align: left !important;
+            }
+
+            .items-table td:nth-child(1) {
+                font-weight: 600;
+                font-size: 15px;
+                color: var(--dark);
+                margin-bottom: 4px;
+            }
+
+            .items-table td:nth-child(2)::before {
+                content: "Kuantitas: ";
+                color: var(--gray-600);
+            }
+
+            .items-table td:nth-child(3)::before {
+                content: "Harga: ";
+                color: var(--gray-600);
+            }
+
+            .items-table td:nth-child(4) {
+                font-weight: 600;
+                color: var(--dark);
+                font-size: 15px;
+                margin-top: 4px;
+            }
+
+            .items-table td:nth-child(4)::before {
+                content: "Total: ";
+                color: var(--gray-600);
+            }
+
+            .payment-summary-block {
+                padding: 20px;
+                border-radius: 16px;
+            }
+
+            .payment-summary-block .amount {
+                font-size: 26px;
+            }
+
+            .logo-img {
+                height: 28px;
+            }
+
+            .header-content {
+                gap: 10px;
+            }
+
+            .status-badge {
+                padding: 4px 12px;
+                font-size: 10px;
+            }
+        }
     </style>
 
     <!-- Midtrans Snap JS -->
@@ -617,9 +721,6 @@
                                         @if(!empty($bank['number']))
                                             No. Rek: <strong>{{ $bank['number'] }}</strong><br>
                                             A.N. {{ $bank['holder'] }}<br>
-                                        @endif
-                                        @if(!empty($bank['payment_link']))
-                                            Tautan Bayar: <a href="{{ $bank['payment_link'] }}" target="_blank" style="color: var(--primary); text-decoration: underline;">Klik di sini</a>
                                         @endif
                                     </div>
                                 @empty

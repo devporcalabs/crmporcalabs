@@ -40,3 +40,11 @@ Route::post('/invoice/{invoice}/pay-token', [\App\Http\Controllers\MidtransContr
 Route::get('/quotation/{quotation}/preview', [PDFController::class, 'previewQuotation'])
     ->name('quotation.public-preview')
     ->middleware('signed');
+
+Route::get('/invoice/{invoice}/verify', [PDFController::class, 'verifyInvoice'])
+    ->name('invoice.verify')
+    ->middleware('signed');
+
+Route::get('/quotation/{quotation}/verify', [PDFController::class, 'verifyQuotation'])
+    ->name('quotation.verify')
+    ->middleware('signed');

@@ -256,6 +256,42 @@ class PDFController extends Controller
     }
 
     /**
+     * Verify the authenticity of an invoice.
+     */
+    public function verifyInvoice(Invoice $invoice)
+    {
+        $invoice->load(['client', 'items']);
+        $companyName = Setting::get('company_name', 'PT Porcalabs Digital Indonesia');
+        $signatureName = Setting::get('digital_signature_name', 'Muhammad Fachry');
+        $signatureTitle = Setting::get('digital_signature_title', 'Direktur Utama');
+
+        return view('invoice.verify', compact(
+            'invoice',
+            'companyName',
+            'signatureName',
+            'signatureTitle'
+        ));
+    }
+
+    /**
+     * Verify the authenticity of a quotation.
+     */
+    public function verifyQuotation(\App\Models\Quotation $quotation)
+    {
+        $quotation->load(['client', 'items']);
+        $companyName = Setting::get('company_name', 'PT Porcalabs Digital Indonesia');
+        $signatureName = Setting::get('digital_signature_name', 'Muhammad Fachry');
+        $signatureTitle = Setting::get('digital_signature_title', 'Direktur Utama');
+
+        return view('quotation.verify', compact(
+            'quotation',
+            'companyName',
+            'signatureName',
+            'signatureTitle'
+        ));
+    }
+
+    /**
      * Helper method to convert numbers to Indonesian words (terbilang).
      */
     private function terbilang($angka)

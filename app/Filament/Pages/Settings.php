@@ -94,16 +94,10 @@ class Settings extends Page implements HasForms
                                         TextInput::make('holder')
                                             ->label('Atas Nama (Opsional)')
                                             ->placeholder('Misal: PT Porcalabs Digital Indonesia'),
-
-                                        TextInput::make('payment_link')
-                                            ->label('Link Pembayaran (Opsional)')
-                                            ->placeholder('Misal: https://pay.midtrans.com/...')
-                                            ->url()
-                                            ->columnSpan(3),
                                     ])
                                     ->columns(3)
                                     ->defaultItems(1)
-                                    ->itemLabel(fn (array $state): ?string => ($state['bank'] ?? '') . ' — ' . ($state['number'] ?? ($state['payment_link'] ?? ''))),
+                                    ->itemLabel(fn (array $state): ?string => ($state['bank'] ?? '') . ' — ' . ($state['number'] ?? '')),
                             ]),
 
                         Tabs\Tab::make('Default & Tanda Tangan')

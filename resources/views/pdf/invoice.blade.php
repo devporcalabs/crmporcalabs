@@ -369,9 +369,6 @@
                                 No. Rek: <strong>{{ $bank['number'] }}</strong><br>
                                 A.N. {{ $bank['holder'] }}<br>
                             @endif
-                            @if(!empty($bank['payment_link']))
-                                Link: <a href="{{ $bank['payment_link'] }}" style="color: #005691; text-decoration: underline;">{{ $bank['payment_link'] }}</a>
-                            @endif
                         </div>
                     @empty
                         <div class="payment-bank-item" style="color: #dc3545;">
@@ -399,8 +396,13 @@
             </td>
             <td class="signature-box">
                 <div class="signature-title">Hormat Kami,</div>
-                <div style="height: 50px;">
-                    <!-- Placeholder space for digital signature / stamp -->
+                <div style="margin: 8px 0; text-align: center;">
+                    @php
+                        $verifyUrl = URL::signedRoute('invoice.verify', ['invoice' => $invoice->id]);
+                        $qrCodeUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=' . urlencode($verifyUrl);
+                    @endphp
+                    <img src="{{ $qrCodeUrl }}" style="width: 70px; height: 70px; display: inline-block;">
+                    <div style="font-size: 7px; color: #666666; margin-top: 4px;">Scan untuk verifikasi</div>
                 </div>
                 <div class="signature-name">{{ $signatureName }}</div>
                 <div class="signature-role">{{ $signatureTitle }}</div>
