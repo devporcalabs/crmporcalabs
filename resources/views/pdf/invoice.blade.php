@@ -378,6 +378,16 @@
                     </div>
                 @endforelse
 
+                @if($invoice->status !== 'lunas')
+                    <div style="margin-top: 12px; margin-bottom: 12px; background-color: #f0f7fc; border-left: 3px solid #005691; padding: 8px; border-radius: 4px;">
+                        <strong style="color: #005691; font-size: 10px;">Pembayaran Online Instan:</strong><br>
+                        <span style="font-size: 9px; color: #444444; line-height: 1.4;">
+                            Mendukung QRIS, E-Wallet, VA Bank, Kartu Kredit.<br>
+                            Tautan: <a href="{{ URL::signedRoute('invoice.public-preview', ['invoice' => $invoice->id]) }}" style="color: #005691; text-decoration: underline; font-weight: bold;">Bayar Online Sekarang &rarr;</a>
+                        </span>
+                    </div>
+                @endif
+
                 <div class="payment-confirmation">
                     * Mohon konfirmasi bukti transfer melalui WhatsApp ke nomor: <strong>+{{ $waConfirmationNumber }}</strong>
                 </div>
