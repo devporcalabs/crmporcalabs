@@ -292,6 +292,37 @@ class PDFController extends Controller
     }
 
     /**
+     * Download the PDF voucher for an expense.
+     */
+    public function downloadExpensePDF(\App\Models\Expense $expense)
+    {
+        $expense->load(['invoice', 'freelancer']);
+
+        $companyName = Setting::get('company_name', 'PT Porcalabs Digital Indonesia');
+        $companyAddress = Setting::get('company_address', '');
+        $companyPhone = Setting::get('company_phone', '');
+        $companyEmail = Setting::get('company_email', '');
+        $signatureName = Setting::get('digital_signature_name', 'Muhammad Fachry');
+        $signatureTitle = Setting::get('digital_signature_title', 'Direktur Utama');
+        
+        $terbilangText = ucwords($this->terbilang($expense->nominal)) . ' Rupiah';
+
+        $pdf = Pdf::loadView('pdf.expense_voucher', compact(
+            'expense',
+            'companyName',
+            'companyAddress',
+            'companyPhone',
+            'companyEmail',
+            'signatureName',
+            'signatureTitle',
+            'terbilangText'
+        ));
+
+        $cleanNumber = str_replace('/', '_', $expense->nomor_pengeluaran ?? 'EXP');
+        return $pdf->download("Voucher_{$cleanNumber}.pdf");
+    }
+
+    /**
      * Helper method to convert numbers to Indonesian words (terbilang).
      */
     private function terbilang($angka)

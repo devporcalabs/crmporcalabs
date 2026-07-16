@@ -10,11 +10,14 @@ class MonthlyRevenue extends ChartWidget
 {
     protected static ?int $sort = 2;
 
-    protected static ?string $heading = 'Grafik Pendapatan Bulanan (12 Bulan Terakhir)';
+    protected static ?string $maxHeight = '275px';
+
+    protected static ?string $heading = 'Grafik Pendapatan vs Pengeluaran (12 Bulan Terakhir)';
 
     protected function getData(): array
     {
-        $data = [];
+        $revenueData = [];
+        $expenseData = [];
         $labels = [];
 
         // Loop through the last 12 months
@@ -28,7 +31,13 @@ class MonthlyRevenue extends ChartWidget
                 ->whereMonth('tanggal', $month)
                 ->sum('jumlah');
 
-            $data[] = floatval($revenue);
+            // Sum expenses logged in this month
+            $expense = \App\Models\Expense::whereYear('tanggal', $year)
+                ->whereMonth('tanggal', $month)
+                ->sum('nominal');
+
+            $revenueData[] = floatval($revenue);
+            $expenseData[] = floatval($expense);
             $labels[] = $date->format('M Y'); // e.g., "Jul 2026"
         }
 
@@ -36,11 +45,21 @@ class MonthlyRevenue extends ChartWidget
             'datasets' => [
                 [
                     'label' => 'Pendapatan Diterima (Rp)',
-                    'data' => $data,
-                    'backgroundColor' => 'rgba(0, 86, 145, 0.2)',
-                    'borderColor' => 'rgba(0, 86, 145, 1)',
-                    'borderWidth' => 2,
+                    'data' => $revenueData,
+                    'backgroundColor' => 'rgba(0, 86, 145, 0.08)',
+                    'borderColor' => '#005691',
+                    'borderWidth' => 3,
                     'fill' => true,
+                    'tension' => 0.3,
+                ],
+                [
+                    'label' => 'Pengeluaran Kas (Rp)',
+                    'data' => $expenseData,
+                    'backgroundColor' => 'rgba(231, 29, 54, 0.04)',
+                    'borderColor' => '#e71d36',
+                    'borderWidth' => 3,
+                    'fill' => true,
+                    'tension' => 0.3,
                 ],
             ],
             'labels' => $labels,
@@ -49,6 +68,6 @@ class MonthlyRevenue extends ChartWidget
 
     protected function getType(): string
     {
-        return 'line'; // A line chart looks beautiful for revenue trends
+        return 'line';
     }
 }

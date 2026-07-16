@@ -48,3 +48,7 @@ Route::get('/invoice/{invoice}/verify', [PDFController::class, 'verifyInvoice'])
 Route::get('/quotation/{quotation}/verify', [PDFController::class, 'verifyQuotation'])
     ->name('quotation.verify')
     ->middleware('signed');
+
+Route::get('/expense/{expense}/pdf', [PDFController::class, 'downloadExpensePDF'])
+    ->name('expense.download-pdf')
+    ->middleware('auth');

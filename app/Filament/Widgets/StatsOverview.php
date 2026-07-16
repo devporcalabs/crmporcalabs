@@ -23,11 +23,9 @@ class StatsOverview extends BaseWidget
             ->whereYear('tanggal', now()->year)
             ->sum('jumlah');
 
-        // 3. Count Overdue Invoices
-        $overdueCount = Invoice::where('status', '!=', 'lunas')
-            ->where('status', '!=', 'dibatalkan')
-            ->where('jatuh_tempo', '<', now()->startOfDay())
-            ->count();
+        // 3. Calculate Expenses and Net Profit
+        $totalExpenses = \App\Models\Expense::sum('nominal');
+        $netProfit = $totalPaid - $totalExpenses;
 
         return [
             Stat::make('Total Piutang (Outstanding)', 'Rp ' . number_format($totalOutstanding, 0, ',', '.'))
@@ -36,14 +34,19 @@ class StatsOverview extends BaseWidget
                 ->color($totalOutstanding > 0 ? 'warning' : 'success'),
 
             Stat::make('Pendapatan Bulan Ini', 'Rp ' . number_format($monthlyRevenue, 0, ',', '.'))
-                ->description('Total pembayaran diterima bulan ini')
+                ->description('Pembayaran diterima bulan ini')
                 ->descriptionIcon('heroicon-m-banknotes')
                 ->color('success'),
 
-            Stat::make('Invoice Jatuh Tempo', $overdueCount . ' Invoice')
-                ->description('Belum lunas & lewat jatuh tempo')
-                ->descriptionIcon('heroicon-m-exclamation-triangle')
-                ->color($overdueCount > 0 ? 'danger' : 'success'),
+            Stat::make('Total Pengeluaran Kas', 'Rp ' . number_format($totalExpenses, 0, ',', '.'))
+                ->description('Total pengeluaran tercatat di CRM')
+                ->descriptionIcon('heroicon-m-document-minus')
+                ->color($totalExpenses > 0 ? 'warning' : 'success'),
+
+            Stat::make('Estimasi Laba Bersih', 'Rp ' . number_format($netProfit, 0, ',', '.'))
+                ->description('Total Pendapatan - Pengeluaran')
+                ->descriptionIcon('heroicon-m-calculator')
+                ->color($netProfit >= 0 ? 'success' : 'danger'),
         ];
     }
 }
