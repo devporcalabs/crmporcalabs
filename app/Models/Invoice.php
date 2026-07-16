@@ -54,6 +54,11 @@ class Invoice extends Model
         return $this->hasMany(Payment::class);
     }
 
+    public function expenses()
+    {
+        return $this->hasMany(Expense::class);
+    }
+
     /**
      * Get the total amount paid for this invoice.
      */
